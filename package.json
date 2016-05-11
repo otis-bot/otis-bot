@@ -5,6 +5,7 @@
   "author": "your name <name@example.com>",
   "description": "A simple helpful robot for your Company",
   "dependencies": {
+    "coffee-script": "^1.10.0",
     "hubot": "^2.19.0",
     "hubot-diagnostics": "0.0.1",
     "hubot-google-images": "^0.2.6",
@@ -23,6 +24,9 @@
     "node": "0.10.x"
   },
   "devDependencies": {
-    "hubot-test-helper": "^1.4.4"
+    "chai": "^3.5.0",
+    "hubot-test-helper": "^1.4.4",
+    "mocha": "^2.4.5",
+    "sinon": "^1.17.4"
   }
 }

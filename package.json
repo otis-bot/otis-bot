@@ -1,9 +1,12 @@
 {
-  "name": "hubot-example",
+  "name": "otis-bot",
   "version": "0.0.0",
   "private": true,
   "author": "your name <name@example.com>",
-  "description": "A simple helpful robot for your Company",
+  "description": "Firehose Slack Bot",
+  "scripts": {
+    "test": "node_modules/mocha/bin/mocha --compilers coffee:coffee-script/register test/*.coffee"
+  },
   "dependencies": {
     "coffee-script": "^1.10.0",
     "hubot": "^2.19.0",

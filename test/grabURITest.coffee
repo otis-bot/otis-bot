@@ -4,13 +4,7 @@ expect = require('chai').expect
 co     = require('co')
 
 describe 'Otis', ->
-  room = null
-
-  beforeEach ->
-    room = helper.createRoom()
-
-  afterEach ->
-    room.destroy()
+  room = helper.createRoom()
 
   context 'User posts URL', ->
     beforeEach ->
@@ -22,3 +16,4 @@ describe 'Otis', ->
         [ 'user1', 'http://fakewebsite.com' ]
         [ 'hubot', 'Meow, Uploading: http://fakewebsite.com' ]
       ]
+    room.destroy()

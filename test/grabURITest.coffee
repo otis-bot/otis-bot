@@ -1,15 +1,15 @@
 Helper = require('hubot-test-helper')
 helper = new Helper('../scripts/grabURI.coffee')
+
 expect = require('chai').expect
 co     = require('co')
 
-describe 'Otis', ->
-  room = helper.createRoom()
 
+describe 'Otis', ->
   context 'User posts URL', ->
-    beforeEach ->
-      co =>
-        yield room.user.say('user1', 'http://fakewebsite.com')
+    room = helper.createRoom()
+    co =>
+      yield room.user.say('user1', 'http://fakewebsite.com')
 
     it 'should reply to user', ->
       expect(room.messages).to.eql [

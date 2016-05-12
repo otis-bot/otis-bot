@@ -21,6 +21,16 @@ describe 'regExp matches URI', ->
 
       expect(urlRepresentation).to.match(regExp)
 
+    it 'should match when using http and no www prefix', ->
+      urlRepresentation = 'https://example.com'
+
+      expect(urlRepresentation).to.match(regExp)
+
+    it 'should not match example.com without any prefix', ->
+      urlRepresentation = 'example.com'
+
+      expect(urlRepresentation).to.not.match(regExp)
+
 
   # In the case of the ...
   context 'with individual pages and query parameters', ->

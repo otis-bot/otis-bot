@@ -16,4 +16,5 @@ describe 'Otis', ->
         [ 'user1', 'http://fakewebsite.com' ]
         [ 'hubot', 'Meow, Uploading: http://fakewebsite.com' ]
       ]
+      
     room.destroy()

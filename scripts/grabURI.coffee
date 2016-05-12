@@ -15,7 +15,7 @@ module.exports = (robot) ->
     robot.http(apiURL)
       .header('Content-Type', 'application/json')
       .post(data) (err, res, body) ->
-        if data.err
-          res.reply "Otis has failed you :("
+        if err
+          robot.reply "Otis has failed you :("
           robot.emit 'error', err, res
           return

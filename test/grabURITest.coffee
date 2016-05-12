@@ -1,7 +1,6 @@
 Helper = require('hubot-test-helper')
 helper = new Helper('../scripts/grabURI.coffee')
 expect = require('chai').expect
-nock = require('nock')
 
 describe 'Otis', ->
   context 'User posts URL', ->

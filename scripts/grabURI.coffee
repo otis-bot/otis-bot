@@ -1,7 +1,7 @@
-regExp = new RegExp("^(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?", "i")
 # Place Holder apiUrl
 apiURL = "#"
-
+# Regular Expression for finding URI
+regExp = new RegExp("^(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?", "i")
 # Listens for URL and posts as JSON to apiURL
 module.exports = (robot) ->
   robot.hear regExp, (msg) ->

@@ -1,3 +1,8 @@
+# Copyright (C) 2016 The Firehose Project
+#
+# This software may be modified and distributed under the terms
+# of the MIT license.  See the LICENSE file for details.
+
 Helper = require('hubot-test-helper')
 helper = new Helper('../scripts/grabURI.coffee')
 expect = require('chai').expect
@@ -175,4 +180,26 @@ describe 'Otis Tests', ->
         expect(room.messages).to.eql [
           [ 'user1', "#{urlRepresentation}" ]
           [ 'hubot', "Meow, Uploading: #{urlRepresentation}" ]
+        ]
+
+  context 'Server Status Not 200', ->
+    room = null
+
+    beforeEach ->
+      room = helper.createRoom()
+      do nock.disableNetConnect
+      nock('http://fakeAPIwebsite.com')
+        .post('/url')
+        .replyWithError('something awful happened');
+
+    afterEach ->
+      room.destroy()
+      nock.cleanAll()
+
+    it 'should reply to User when handed proper URL', ->
+      room.user.say('user1', 'http://fakewebsite.com').then =>
+        console.log room.messages
+        expect(room.messages).to.eql [
+          [ 'user1', 'http://fakewebsite.com' ]
+          [ 'hubot', "Meow, Uploading: http://fakewebsite.com" ]
         ]

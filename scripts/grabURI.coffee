@@ -1,3 +1,8 @@
+# Copyright (C) 2016 The Firehose Project
+#
+# This software may be modified and distributed under the terms
+# of the MIT license.  See the LICENSE file for details.
+
 urlRegex = require('url-regex')
 
 apiURL = "#"

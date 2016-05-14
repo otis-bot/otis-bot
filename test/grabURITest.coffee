@@ -56,8 +56,8 @@ describe 'Testing of Otis bot', ->
     it 'should reply to User to indicate a server failure has occurred', ->
       room.user.say('testUser', 'http://testURL.com').then =>
         expect(room.messages).to.eql [
-          [ 'testUser', 'http://testURL.com' ]
-          [ 'hubot', 'Meow, Uploading: http://testURL.com' ]
+          [ 'testUser', 'http://testURL.com' ],
+          [ 'hubot', 'Meow, Uploading: http://testURL.com' ],
           [ 'hubot', 'Otis has failed' ]
         ]
 

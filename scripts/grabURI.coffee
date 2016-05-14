@@ -24,5 +24,5 @@ module.exports = (robot) ->
       .header('Content-Type', 'application/json')
       .post(data) (err, res, body) ->
         if err
-          res.send "Otis has failed you :( #{err}"
+          robot.send 'hubot', 'Otis has failed'
           return

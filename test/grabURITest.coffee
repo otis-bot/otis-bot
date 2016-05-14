@@ -58,7 +58,7 @@ describe 'Testing of Otis bot', ->
         expect(room.messages).to.eql [
           [ 'testUser', 'http://testURL.com' ],
           [ 'hubot', 'Meow, Uploading: http://testURL.com' ],
-          [ 'hubot', 'Otis has failed' ]
+          [ 'hubot', 'Otis has failed' ],
         ]
 
   #

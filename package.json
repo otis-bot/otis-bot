@@ -29,7 +29,9 @@
     "node": "0.10.x"
   },
   "devDependencies": {
+    "bluebird": "^3.3.5",
     "chai": "^3.5.0",
+    "co": "^4.6.0",
     "coffee-script": "^1.10.0",
     "coveralls": "^2.11.9",
     "hubot-test-helper": "^1.4.4",

@@ -3,10 +3,12 @@
 # This software may be modified and distributed under the terms
 # of the MIT license.  See the LICENSE file for details.
 
-Helper = require('hubot-test-helper')
-helper = new Helper('../scripts/grabURI.coffee')
-expect = require('chai').expect
-nock   = require('nock')
+Helper  = require('hubot-test-helper')
+helper  = new Helper('../scripts/grabURI.coffee')
+expect  = require('chai').expect
+nock    = require('nock')
+co      = require('co')
+Promise = require('bluebird')
 
 describe 'Testing of Otis bot', ->
   
@@ -31,7 +33,10 @@ describe 'Testing of Otis bot', ->
       nock.cleanAll()
 
     it 'should reply to User with the URL posted in Slack chat', ->
-      room.user.say('testUser', 'http://testURL.com').then =>
+      co =>
+        yield room.user.say 'testUser', 'http://testURL.com'
+        yield new Promise.delay(1000)
+
         expect(room.messages).to.eql [
           [ 'testUser', 'http://testURL.com' ]
           [ 'hubot', 'Meow, Uploading: http://testURL.com' ]
@@ -54,7 +59,10 @@ describe 'Testing of Otis bot', ->
       nock.cleanAll()
 
     it 'should reply to User to indicate a server failure has occurred', ->
-      room.user.say('testUser', 'http://testURL.com').then =>
+      co =>
+        yield room.user.say 'testUser', 'http://testURL.com'
+        yield new Promise.delay(1000)
+
         expect(room.messages).to.eql [
           [ 'testUser', 'http://testURL.com' ],
           [ 'hubot', 'Meow, Uploading: http://testURL.com' ],

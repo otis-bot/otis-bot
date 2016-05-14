@@ -8,55 +8,74 @@ helper = new Helper('../scripts/grabURI.coffee')
 expect = require('chai').expect
 nock   = require('nock')
 
-describe 'Otis Tests', ->
-  context 'Interaction with User', ->
+describe 'Testing of Otis bot', ->
+  
+  #
+  # testing of the ability to POST to the backend
+  #
+
+  context 'When successfully attempting to POST to the backend API', ->
+
     room = null
 
-    beforeEach ->
+    beforeEach ->      
+      # stub out both the room and the backend API server
       room = helper.createRoom()
-      do nock.disableNetConnect
-      nock('http://fakeAPIwebsite.com')
+      nock('http://www.APIBackend.com')
         .post('/url')
-        .reply 200, url: 'http://fakewebsite.com'
+        .reply(200, { url: 'http://fakewebsite.com' })
 
     afterEach ->
+      # destroy the toom and reset the mocks
       room.destroy()
       nock.cleanAll()
 
-    it 'should reply to User when handed proper URL', ->
-      room.user.say('user1', 'http://fakewebsite.com').then =>
+    it 'should reply to User with the URL posted in Slack chat', ->
+      room.user.say('testUser', 'http://testURL.com').then =>
         expect(room.messages).to.eql [
-          [ 'user1', 'http://fakewebsite.com' ]
-          [ 'hubot', 'Meow, Uploading: http://fakewebsite.com' ]
+          [ 'testUser', 'http://testURL.com' ]
+          [ 'hubot', 'Meow, Uploading: http://testURL.com' ]
         ]
 
-    it 'should reply to User when handed proper URL inside of text', ->
-      room.user.say('user1', 'Check out this link http://fakewebsite.com').then =>
+  context 'When unsuccessfully attempting to POST to the backend API', ->
+
+    room = null
+
+    beforeEach ->      
+      # stub out both the room and the backend API server
+      room = helper.createRoom()
+      nock('http://www.APIBackend.com')
+        .post('/url')
+        .replyWithError('Error');
+
+    afterEach ->
+      # destroy the toom and reset the mocks
+      room.destroy()
+      nock.cleanAll()
+
+    it 'should reply to User to indicate a server failure has occurred', ->
+      room.user.say('testUser', 'http://testURL.com').then =>
         expect(room.messages).to.eql [
-          [ 'user1', 'Check out this link http://fakewebsite.com' ]
-          [ 'hubot', 'Meow, Uploading: http://fakewebsite.com' ]
+          [ 'testUser', 'http://testURL.com' ]
+          [ 'hubot', 'Meow, Uploading: http://testURL.com' ]
+          [ 'hubot', 'Otis has failed' ]
         ]
 
-    it 'should not reply to User when handed text', ->
-      room.user.say('user1', 'This is super amazing').then =>
-        expect(room.messages).to.eql [
-          [ 'user1', 'This is super amazing' ]
-        ]
+  #
+  # testing of the RegEx
+  #
 
-  context 'matches with standard web urls', ->
+  # http
+  context 'when matched against variations of a standard web url', ->
+    
     room = null
     urlRepresentation = null
 
     beforeEach ->
       room = helper.createRoom()
-      do nock.disableNetConnect
-      nock('http://fakeAPIwebsite.com')
-        .post('/url')
-        .reply 200, url: "#{urlRepresentation}"
 
     afterEach ->
       room.destroy()
-      nock.cleanAll()
 
     it 'should match www.example.com in the base case', ->
       urlRepresentation = 'http://www.example.com'
@@ -119,6 +138,36 @@ describe 'Otis Tests', ->
           [ 'hubot', "Meow, Uploading: #{urlRepresentation}" ]
         ]
 
+    it 'should match when using domain name with tilda', ->
+      urlRepresentation = 'https://www.cs.tut.fi/~jkorpela/ftpurl.html'
+
+      room.user.say('user1', "#{urlRepresentation}").then =>
+        expect(room.messages).to.eql [
+          [ 'user1', "#{urlRepresentation}" ]
+          [ 'hubot', "Meow, Uploading: #{urlRepresentation}" ]
+        ]
+
+    it 'should match when using domain name with anchor', ->
+      urlRepresentation = 'http://fullurlhere.com/nbs-test-panel-of-diseases-2#anchorlink1'
+
+      room.user.say('user1', "#{urlRepresentation}").then =>
+        expect(room.messages).to.eql [
+          [ 'user1', "#{urlRepresentation}" ]
+          [ 'hubot', "Meow, Uploading: #{urlRepresentation}" ]
+        ]
+
+  # ftp
+  context 'when matched against variations of a standard ftp uri', ->
+    
+    room = null
+    urlRepresentation = null
+
+    beforeEach ->
+      room = helper.createRoom()
+
+    afterEach ->
+      room.destroy()
+
     it 'should match when using domain name with ftp', ->
       urlRepresentation = 'ftp://ftp.example.com'
 
@@ -162,44 +211,4 @@ describe 'Otis Tests', ->
         expect(room.messages).to.eql [
           [ 'user1', "#{urlRepresentation}" ]
           [ 'hubot', "Meow, Uploading: #{urlRepresentation}" ]
-        ]
-
-    it 'should match when using domain name with tilda', ->
-      urlRepresentation = 'https://www.cs.tut.fi/~jkorpela/ftpurl.html'
-
-      room.user.say('user1', "#{urlRepresentation}").then =>
-        expect(room.messages).to.eql [
-          [ 'user1', "#{urlRepresentation}" ]
-          [ 'hubot', "Meow, Uploading: #{urlRepresentation}" ]
-        ]
-
-    it 'should match when using domain name with anchor', ->
-      urlRepresentation = 'http://fullurlhere.com/nbs-test-panel-of-diseases-2#anchorlink1'
-
-      room.user.say('user1', "#{urlRepresentation}").then =>
-        expect(room.messages).to.eql [
-          [ 'user1', "#{urlRepresentation}" ]
-          [ 'hubot', "Meow, Uploading: #{urlRepresentation}" ]
-        ]
-
-  context 'Server Status Not 200', ->
-    room = null
-
-    beforeEach ->
-      room = helper.createRoom()
-      do nock.disableNetConnect
-      nock('http://fakeAPIwebsite.com')
-        .post('/url')
-        .replyWithError('something awful happened');
-
-    afterEach ->
-      room.destroy()
-      nock.cleanAll()
-
-    it 'should reply to User when handed proper URL', ->
-      room.user.say('user1', 'http://fakewebsite.com').then =>
-        console.log room.messages
-        expect(room.messages).to.eql [
-          [ 'user1', 'http://fakewebsite.com' ]
-          [ 'hubot', "Meow, Uploading: http://fakewebsite.com" ]
         ]

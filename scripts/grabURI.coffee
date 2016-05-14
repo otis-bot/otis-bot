@@ -1,13 +1,16 @@
 # Description:
-#
+#   A Hubot robot that listens for the posting of
+#   URLs to Slack chat and than posts them to a
+#   back-end database.
 # Dependencies:
-#
+#   url-regex
 # Configuration:
-#
+#   None
 # Commands:
-#
+#   None
 # Author:
-#   The Firehose Project
+#   © 2016 The Firehose Project
+#   License MIT (https://opensource.org/licenses/MIT).
 
 urlRegex = require('url-regex')
 

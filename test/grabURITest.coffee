@@ -1,7 +1,5 @@
-# Copyright (C) 2016 The Firehose Project
-#
-# This software may be modified and distributed under the terms
-# of the MIT license.  See the LICENSE file for details.
+# © 2016 The Firehose Project
+# License MIT (https://opensource.org/licenses/MIT).
 
 Helper  = require('hubot-test-helper')
 helper  = new Helper('../scripts/grabURI.coffee')
@@ -21,21 +19,26 @@ describe 'Testing of Otis bot', ->
     room = null
 
     beforeEach ->      
-      # stub out both the room and the backend API server
+  
+      # stub out both a Slack room and the backend API server
       room = helper.createRoom()
       nock('http://www.APIBackend.com')
         .post('/url')
         .reply(200, { url: 'http://fakewebsite.com' })
 
     afterEach ->
-      # destroy the toom and reset the mocks
+
+      # destroy the toom and reset the URL mock
       room.destroy()
       nock.cleanAll()
 
     it 'should reply to User with the URL posted in Slack chat', ->
       co =>
         yield room.user.say 'testUser', 'http://testURL.com'
-        yield new Promise.delay(1000)
+        yield new Promise.delay(1000)  # required to prevent the code from
+                                       # racing ahead of the code that
+                                       # populates the chat root with an
+                                       # error message
 
         expect(room.messages).to.eql [
           [ 'testUser', 'http://testURL.com' ]
@@ -47,21 +50,26 @@ describe 'Testing of Otis bot', ->
     room = null
 
     beforeEach ->      
-      # stub out both the room and the backend API server
+
+      # stub out both a Slack room and the backend API server
       room = helper.createRoom()
       nock('http://www.APIBackend.com')
         .post('/url')
         .replyWithError('Error');
 
     afterEach ->
-      # destroy the toom and reset the mocks
+
+      # destroy the toom and reset the URL mock
       room.destroy()
       nock.cleanAll()
 
     it 'should reply to User to indicate a server failure has occurred', ->
       co =>
         yield room.user.say 'testUser', 'http://testURL.com'
-        yield new Promise.delay(1000)
+        yield new Promise.delay(1000)  # required to prevent the code from
+                                       # racing ahead of the code that
+                                       # populates the chat root with an
+                                       # error message
 
         expect(room.messages).to.eql [
           [ 'testUser', 'http://testURL.com' ],

@@ -18,7 +18,7 @@ describe 'Testing of Otis bot', ->
 
     room = null
 
-    beforeEach ->      
+    beforeEach ->
   
       # stub out both a Slack room and the backend API server
       room = helper.createRoom()
@@ -33,7 +33,7 @@ describe 'Testing of Otis bot', ->
       nock.cleanAll()
 
     it 'should reply to User with the URL posted in Slack chat', ->
-      co =>
+      co ->
         yield room.user.say 'testUser', 'http://testURL.com'
         yield new Promise.delay(1000)  # required to prevent the code from
                                        # racing ahead of the code that
@@ -49,13 +49,13 @@ describe 'Testing of Otis bot', ->
 
     room = null
 
-    beforeEach ->      
+    beforeEach ->
 
       # stub out both a Slack room and the backend API server
       room = helper.createRoom()
       nock('http://www.APIBackend.com')
         .post('/url')
-        .replyWithError('Error');
+        .replyWithError('Error')
 
     afterEach ->
 
@@ -64,7 +64,7 @@ describe 'Testing of Otis bot', ->
       nock.cleanAll()
 
     it 'should reply to User to indicate a server failure has occurred', ->
-      co =>
+      co ->
         yield room.user.say 'testUser', 'http://testURL.com'
         yield new Promise.delay(1000)  # required to prevent the code from
                                        # racing ahead of the code that
@@ -96,7 +96,7 @@ describe 'Testing of Otis bot', ->
     it 'should match www.example.com in the base case', ->
       urlRepresentation = 'http://www.example.com'
 
-      room.user.say('user1', "#{urlRepresentation}").then =>
+      room.user.say('user1', "#{urlRepresentation}").then ->
         expect(room.messages).to.eql [
           [ 'user1', "#{urlRepresentation}" ]
           [ 'hubot', "Meow, Uploading: #{urlRepresentation}" ]
@@ -105,7 +105,7 @@ describe 'Testing of Otis bot', ->
     it 'should match when using https', ->
       urlRepresentation = 'https://www.example.com'
 
-      room.user.say('user1', "#{urlRepresentation}").then =>
+      room.user.say('user1', "#{urlRepresentation}").then ->
         expect(room.messages).to.eql [
           [ 'user1', "#{urlRepresentation}" ]
           [ 'hubot', "Meow, Uploading: #{urlRepresentation}" ]
@@ -114,7 +114,7 @@ describe 'Testing of Otis bot', ->
     it 'should not match when using domain name without http or https', ->
       urlRepresentation = 'www.example.com'
 
-      room.user.say('user1', "#{urlRepresentation}").then =>
+      room.user.say('user1', "#{urlRepresentation}").then ->
         expect(room.messages).to.eql [
           [ 'user1', "#{urlRepresentation}" ]
         ]
@@ -122,7 +122,7 @@ describe 'Testing of Otis bot', ->
     it 'should match when using http and no www prefix', ->
       urlRepresentation = 'https://example.com'
 
-      room.user.say('user1', "#{urlRepresentation}").then =>
+      room.user.say('user1', "#{urlRepresentation}").then ->
         expect(room.messages).to.eql [
           [ 'user1', "#{urlRepresentation}" ]
           [ 'hubot', "Meow, Uploading: #{urlRepresentation}" ]
@@ -131,7 +131,7 @@ describe 'Testing of Otis bot', ->
     it 'should not match example.com without any prefix', ->
       urlRepresentation = 'example.com'
 
-      room.user.say('user1', "#{urlRepresentation}").then =>
+      room.user.say('user1', "#{urlRepresentation}").then ->
         expect(room.messages).to.eql [
           [ 'user1', "#{urlRepresentation}" ]
         ]
@@ -139,7 +139,7 @@ describe 'Testing of Otis bot', ->
     it 'should match URLs containing individual pages', ->
       urlRepresentation = 'http://www.example.com/index.html'
 
-      room.user.say('user1', "#{urlRepresentation}").then =>
+      room.user.say('user1', "#{urlRepresentation}").then ->
         expect(room.messages).to.eql [
           [ 'user1', "#{urlRepresentation}" ]
           [ 'hubot', "Meow, Uploading: #{urlRepresentation}" ]
@@ -148,7 +148,7 @@ describe 'Testing of Otis bot', ->
     it 'should match URLs containing query parameters', ->
       urlRepresentation = 'http://www.example.com/index.html?zip=94109'
 
-      room.user.say('user1', "#{urlRepresentation}").then =>
+      room.user.say('user1', "#{urlRepresentation}").then ->
         expect(room.messages).to.eql [
           [ 'user1', "#{urlRepresentation}" ]
           [ 'hubot', "Meow, Uploading: #{urlRepresentation}" ]
@@ -157,16 +157,16 @@ describe 'Testing of Otis bot', ->
     it 'should match when using domain name with tilda', ->
       urlRepresentation = 'https://www.cs.tut.fi/~jkorpela/ftpurl.html'
 
-      room.user.say('user1', "#{urlRepresentation}").then =>
+      room.user.say('user1', "#{urlRepresentation}").then ->
         expect(room.messages).to.eql [
           [ 'user1', "#{urlRepresentation}" ]
           [ 'hubot', "Meow, Uploading: #{urlRepresentation}" ]
         ]
 
     it 'should match when using domain name with anchor', ->
-      urlRepresentation = 'http://fullurlhere.com/nbs-test-panel-of-diseases-2#anchorlink1'
+      urlRepresentation = 'http://url.com/test#anchorlink1'
 
-      room.user.say('user1', "#{urlRepresentation}").then =>
+      room.user.say('user1', "#{urlRepresentation}").then ->
         expect(room.messages).to.eql [
           [ 'user1', "#{urlRepresentation}" ]
           [ 'hubot', "Meow, Uploading: #{urlRepresentation}" ]
@@ -187,7 +187,7 @@ describe 'Testing of Otis bot', ->
     it 'should match when using domain name with ftp', ->
       urlRepresentation = 'ftp://ftp.example.com'
 
-      room.user.say('user1', "#{urlRepresentation}").then =>
+      room.user.say('user1', "#{urlRepresentation}").then ->
         expect(room.messages).to.eql [
           [ 'user1', "#{urlRepresentation}" ]
           [ 'hubot', "Meow, Uploading: #{urlRepresentation}" ]
@@ -196,7 +196,7 @@ describe 'Testing of Otis bot', ->
     it 'should match when using domain name without ftp', ->
       urlRepresentation = 'ftp://example.com'
 
-      room.user.say('user1', "#{urlRepresentation}").then =>
+      room.user.say('user1', "#{urlRepresentation}").then ->
         expect(room.messages).to.eql [
           [ 'user1', "#{urlRepresentation}" ]
           [ 'hubot', "Meow, Uploading: #{urlRepresentation}" ]
@@ -205,25 +205,25 @@ describe 'Testing of Otis bot', ->
     it 'should match FTPs containing individual pages', ->
       urlRepresentation = 'ftp://ftp.example.com/index.zip'
 
-      room.user.say('user1', "#{urlRepresentation}").then =>
+      room.user.say('user1', "#{urlRepresentation}").then ->
         expect(room.messages).to.eql [
           [ 'user1', "#{urlRepresentation}" ]
           [ 'hubot', "Meow, Uploading: #{urlRepresentation}" ]
         ]
 
     it 'should match when using domain name without ftp', ->
-      urlRepresentation = 'ftp://example.com/index.html?file=requestedFileName.zip'
+      urlRepresentation = 'ftp://example.com/index.html?file=FileName.zip'
 
-      room.user.say('user1', "#{urlRepresentation}").then =>
+      room.user.say('user1', "#{urlRepresentation}").then ->
         expect(room.messages).to.eql [
           [ 'user1', "#{urlRepresentation}" ]
           [ 'hubot', "Meow, Uploading: #{urlRepresentation}" ]
         ]
 
-    it 'should match when using domain name ftp with user password and decorator symbol', ->
+    it 'should match when using domain name ftp with user/pwd/decorator', ->
       urlRepresentation = 'ftp://user:password@host.private'
 
-      room.user.say('user1', "#{urlRepresentation}").then =>
+      room.user.say('user1', "#{urlRepresentation}").then ->
         expect(room.messages).to.eql [
           [ 'user1', "#{urlRepresentation}" ]
           [ 'hubot', "Meow, Uploading: #{urlRepresentation}" ]

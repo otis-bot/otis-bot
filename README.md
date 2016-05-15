@@ -29,7 +29,7 @@ Otis-Bot currently remains pre-production.
 
 ##Credits
 
-Otis-Bot was written by Michael Ferrill and is maintined by Michael Ferrill and
+Otis-Bot was written by Michael Ferrill and is maintined by Michael Farrell and
 other graduates of the Firehose Project, including:
 
 Matthew Dunn ([radiofreemattd](https://github.com/radiofreemattd))

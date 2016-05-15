@@ -28,4 +28,5 @@ module.exports = (robot) ->
       .post(data) (err, res, body) ->
         if err
           robot.send 'hubot', 'Otis has failed'
+          robot.emit 'error', err, res
           return

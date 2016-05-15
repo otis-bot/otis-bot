@@ -6,6 +6,7 @@
   "description": "Firehose Slack Bot",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha --compilers coffee:coffee-script/register test/*.coffee",
+    "lint": "coffeelint scripts/*.coffee test/*.coffee",
     "coverage": "istanbul cover _mocha -- -R spec --compilers coffee:coffee-script/register test/*.coffee"
   },
   "dependencies": {
@@ -25,7 +26,7 @@
     "hubot-slack": "^3.4.2",
     "url-regex": "^3.1.1"
   },
-  "engines": {
+  "engines":   {
     "node": "0.10.x"
   },
   "devDependencies": {

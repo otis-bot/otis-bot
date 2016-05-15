@@ -34,9 +34,8 @@ other graduates of the Firehose Project, including:
 
 Matthew Dunn ([radiofreemattd](https://github.com/radiofreemattd))
 
+Michael Farrell ([mikeysax](https://github.com/Mikeysax))
+
 ##Licensing Information
 
 Otis-Bot is subject to the terms of the MIT License Agreement, available [here](MITLicense.md).
-
-
-

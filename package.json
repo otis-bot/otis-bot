@@ -1,10 +1,17 @@
 {
-  "name": "hubot-example",
+  "name": "otis-bot",
   "version": "0.0.0",
   "private": true,
-  "author": "your name <name@example.com>",
-  "description": "A simple helpful robot for your Company",
+  "author": "Michael Farrell <michaelmerrittfarrell@gmail.com>",
+  "description": "Firehose Slack Bot",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha --compilers coffee:coffee-script/register test/*.coffee",
+    "lint": "coffeelint scripts/*.coffee test/*.coffee",
+    "coverage": "istanbul cover _mocha -- -R spec --compilers coffee:coffee-script/register test/*.coffee"
+  },
   "dependencies": {
+    "coffee-script": "^1.10.0",
+    "url-regex": "^3.1.1",
     "hubot": "^2.19.0",
     "hubot-diagnostics": "0.0.1",
     "hubot-google-images": "^0.2.6",
@@ -19,7 +26,21 @@
     "hubot-shipit": "^0.2.0",
     "hubot-slack": "^3.4.2"
   },
-  "engines": {
+  "engines":   {
     "node": "0.10.x"
+  },
+  "devDependencies": {
+    "bluebird": "^3.3.5",
+    "chai": "^3.5.0",
+    "co": "^4.6.0",
+    "coffee-script": "^1.10.0",
+    "coffeelint": "^1.15.7",
+    "coveralls": "^2.11.9",
+    "hubot-test-helper": "^1.4.4",
+    "istanbul": "^0.4.3",
+    "istanbul-coveralls": "^1.0.3",
+    "mocha": "^2.4.5",
+    "mocha-lcov-reporter": "^1.2.0",
+    "nock": "^8.0.0"
   }
 }
